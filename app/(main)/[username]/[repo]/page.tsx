@@ -35,6 +35,8 @@ export default async function ReleasePage({ params }: PageProps<Params>) {
         <Image
           src={ghRepo.owner.avatar_url}
           alt={ghRepo.owner.login}
+          width={48}
+          height={48}
           className="w-12 h-12 rounded-full"
         />
         <div className="">
