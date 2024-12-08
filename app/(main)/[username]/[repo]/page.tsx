@@ -1,6 +1,7 @@
 import type { PageProps } from '@/app/types'
 import ReleaseNotes from '@/components/ReleaseNotes'
 import { type Repo, getRepo } from '@/lib/github'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -24,14 +25,14 @@ export default async function ReleasePage({ params }: PageProps<Params>) {
 
   try {
     ghRepo = await getRepo(`${username}/${repo}`)
-  } catch (error) {
+  } catch {
     return notFound()
   }
 
   return (
     <div className="container mx-auto p-4">
       <div className="mb-6 flex gap-4 items-center">
-        <img
+        <Image
           src={ghRepo.owner.avatar_url}
           alt={ghRepo.owner.login}
           className="w-12 h-12 rounded-full"
