@@ -33,7 +33,10 @@ export default function TagList({
     },
   })
 
-  const tags = tagsQuery.data?.pages.flat() ?? []
+  const tags = useMemo(() => {
+    return tagsQuery.data?.pages?.flat() ?? []
+  }, [tagsQuery.data])
+
   const filteredTags = useMemo(() => {
     return tags.filter((tag) => tag.name.includes(filter))
   }, [tags, filter])
