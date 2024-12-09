@@ -3,7 +3,8 @@
 import { MAX_ITEMS_PER_PAGE, type Tag, getTags } from '@/lib/github'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { LoaderIcon } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 
@@ -32,67 +33,96 @@ export default function TagList({
     },
   })
 
-  const tags = tagsQuery.data?.pages.flat() ?? []
-  const filteredTags = tags.filter((tag) => tag.name.includes(filter))
+  const tags = useMemo(() => {
+    return tagsQuery.data?.pages?.flat() ?? []
+  }, [tagsQuery.data])
+
+  const filteredTags = useMemo(() => {
+    return tags.filter((tag) => tag.name.toLowerCase().includes(filter))
+  }, [tags, filter])
+
+  const observerTarget = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          tagsQuery.hasNextPage &&
+          !tagsQuery.isFetchingNextPage
+        ) {
+          fetchNextPage()
+        }
+      },
+      { threshold: 0.5 },
+    )
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current)
+    }
+
+    return () => observer.disconnect()
+  }, [fetchNextPage, tagsQuery.hasNextPage, tagsQuery.isFetchingNextPage])
 
   return (
     <div className="border p-4 rounded">
       <p className="text-lg font-semibold mb-4">Tags ({tags.length})</p>
 
-      {tagsQuery.status === 'pending' && <p>Loading tags...</p>}
+      {/* Filter tags */}
+      <Input
+        type="text"
+        placeholder="Filter tags"
+        value={filter}
+        onChange={(e) => setFilter(e.target.value.toLowerCase())}
+        className="w-full p-2 border rounded my-4"
+      />
 
-      {tagsQuery.status === 'error' && (
-        <p className="text-destructive">{tagsQuery.error.message}</p>
-      )}
-
-      {tagsQuery.status === 'success' && (
-        <>
-          {/* Filter tags */}
-          <Input
-            type="text"
-            placeholder="Filter tags"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="w-full p-2 border rounded my-4"
-          />
-
-          <ScrollArea className="mt-2 max-h-[10rem] lg:max-h-[60vh] overflow-y-auto">
-            {filteredTags.length > 0 ? (
-              <ul className="space-y-2">
-                {filteredTags.map((tag) => (
-                  <li key={tag.name}>
-                    <Button
-                      variant={tag === selectedTag ? 'default' : 'outline'}
-                      onClick={() => {
-                        onTagSelect?.(tag)
-                      }}
-                      className="w-full"
-                    >
-                      {tag.name}
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-center my-2 text-gray-500">
-                No tags found. Try a different filter or load more.
-              </p>
-            )}
-
-            {/* Load more */}
-            {tagsQuery.hasNextPage && (
+      <ScrollArea className="mt-2 max-h-[10rem] lg:max-h-[16rem] overflow-y-auto">
+        <ul className="space-y-2">
+          {filteredTags.map((tag) => (
+            <li key={tag.name}>
               <Button
-                variant="secondary"
-                onClick={() => fetchNextPage()}
-                className="w-full mt-2"
-                disabled={tagsQuery.isFetchingNextPage}
+                variant={tag.name === selectedTag?.name ? 'default' : 'outline'}
+                onClick={() => {
+                  onTagSelect?.(tag)
+                }}
+                className="w-full truncate"
               >
-                {tagsQuery.isFetchingNextPage ? 'Loading...' : 'Load more'}
+                {tag.name}
               </Button>
-            )}
-          </ScrollArea>
-        </>
+            </li>
+          ))}
+
+          {/* Load more */}
+          {tagsQuery.hasNextPage && (
+            <div ref={observerTarget} className="h-6">
+              {tagsQuery.isFetchingNextPage && (
+                <LoaderIcon className="animate-spin h-6 w-6 mx-auto">
+                  <span className="sr-only">Loading...</span>
+                </LoaderIcon>
+              )}
+            </div>
+          )}
+        </ul>
+      </ScrollArea>
+
+      {tagsQuery.isPending && (
+        <p className="text-center text-sm mt-2">Loading tags...</p>
       )}
+
+      {tagsQuery.isError && (
+        <p className="text-destructive text-center text-sm mt-2">
+          {tagsQuery.error.message}
+        </p>
+      )}
+
+      {tagsQuery.isSuccess &&
+        !tagsQuery.hasNextPage &&
+        filteredTags.length < 1 && (
+          <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-2">
+            No tags found. Try a different filter.
+          </p>
+        )}
     </div>
   )
 }
