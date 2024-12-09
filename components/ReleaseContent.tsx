@@ -43,7 +43,7 @@ export default function ReleaseContent({ repo, tag }: Props) {
           onClick={() => {
             try {
               navigator.clipboard.writeText(
-                `${window.location.origin}/${repo}?tag=${tag ?? ''}`,
+                `${window.location.origin}/${repo}?tag=${release.tag_name}`,
               )
               toast.success('Copied')
             } catch {
