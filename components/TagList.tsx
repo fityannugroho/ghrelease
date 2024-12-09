@@ -38,7 +38,7 @@ export default function TagList({
   }, [tagsQuery.data])
 
   const filteredTags = useMemo(() => {
-    return tags.filter((tag) => tag.name.includes(filter))
+    return tags.filter((tag) => tag.name.toLowerCase().includes(filter))
   }, [tags, filter])
 
   const observerTarget = useRef<HTMLDivElement>(null)
