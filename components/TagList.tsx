@@ -24,7 +24,7 @@ export default function TagList({
     queryKey: ['tags', repo],
     queryFn: ({ pageParam }) => getTags(repo, pageParam),
     initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       if (lastPage.length < MAX_ITEMS_PER_PAGE) {
         return undefined
       }
