@@ -33,3 +33,9 @@ export function debounce<T extends unknown[]>(
     }, delay)
   }
 }
+
+export const NEXT_NOT_FOUND_ERR_MSG = 'NEXT_NOT_FOUND'
+
+export function isNextNotFoundError(error: unknown) {
+  return error instanceof Error && error.message === NEXT_NOT_FOUND_ERR_MSG
+}

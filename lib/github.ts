@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation'
+
 export type Repo = {
   id: number
   full_name: string
@@ -16,7 +18,15 @@ export type Tag = {
   name: string
 }
 
+export const MAX_ITEMS_PER_PAGE = 30
+
 const GITHUB_API_URL = 'https://api.github.com'
+
+const RATE_LIMIT_ERR_MSG = 'GitHub API rate limit exceeded'
+
+export function isRateLimitError(error: unknown) {
+  return error instanceof Error && error.message === RATE_LIMIT_ERR_MSG
+}
 
 async function fetchGitHub(endpoint: string) {
   const response = await fetch(`${GITHUB_API_URL}${endpoint}`, {
@@ -27,6 +37,12 @@ async function fetchGitHub(endpoint: string) {
   })
   const result = await response.json()
   if (!response.ok) {
+    if (response.status === 404) {
+      notFound()
+    }
+    if (response.status === 403) {
+      throw new Error(RATE_LIMIT_ERR_MSG)
+    }
     throw new Error(`GitHub API error: ${result.message} (${response.status})`)
   }
   return result

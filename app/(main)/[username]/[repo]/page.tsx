@@ -1,9 +1,8 @@
 import type { PageProps } from '@/app/types'
 import ReleaseNotes from '@/components/ReleaseNotes'
-import { type Repo, getRepo } from '@/lib/github'
+import { getRepo } from '@/lib/github'
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
 
 type Params = {
   username: string
@@ -21,13 +20,7 @@ export async function generateMetadata({ params }: PageProps<Params>) {
 
 export default async function ReleasePage({ params }: PageProps<Params>) {
   const { username, repo } = await params
-  let ghRepo: Repo | undefined
-
-  try {
-    ghRepo = await getRepo(`${username}/${repo}`)
-  } catch {
-    return notFound()
-  }
+  const ghRepo = await getRepo(`${username}/${repo}`)
 
   return (
     <div className="container mx-auto p-4">
@@ -41,7 +34,7 @@ export default async function ReleasePage({ params }: PageProps<Params>) {
         />
         <div className="">
           {/* Avatar */}
-          <h1 className="text-4xl font-bold mb-2">
+          <h1 className="text-3xl font-bold mb-2">
             <Link
               href={`https://github.com/${username}/${repo}`}
               target="_blank"
@@ -56,7 +49,7 @@ export default async function ReleasePage({ params }: PageProps<Params>) {
         </div>
       </div>
 
-      <ReleaseNotes repo={`${username}/${repo}`} />
+      <ReleaseNotes repo={ghRepo.full_name} />
     </div>
   )
 }

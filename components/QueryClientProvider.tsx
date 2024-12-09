@@ -2,6 +2,7 @@
 
 import { getQueryClient } from '@/lib/queryClient'
 import { QueryClientProvider as BaseQueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { type PropsWithChildren, useState } from 'react'
 
 export default function QueryClientProvider({ children }: PropsWithChildren) {
@@ -10,6 +11,7 @@ export default function QueryClientProvider({ children }: PropsWithChildren) {
   return (
     <BaseQueryClientProvider client={queryClient}>
       {children}
+      <ReactQueryDevtools initialIsOpen={false} />
     </BaseQueryClientProvider>
   )
 }
