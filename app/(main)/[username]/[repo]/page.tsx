@@ -9,7 +9,13 @@ type Params = {
   repo: string
 }
 
-export async function generateMetadata({ params }: PageProps<Params>) {
+type SearchParams = {
+  tag?: string
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps<Params, SearchParams>) {
   const { username, repo } = await params
 
   return {

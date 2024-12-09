@@ -1,6 +1,7 @@
 'use client'
 
 import type { Tag } from '@/lib/github'
+import { useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 import ReleaseContent from './ReleaseContent'
 import TagList from './TagList'
@@ -10,7 +11,11 @@ type Props = {
 }
 
 export default function ReleaseNotes({ repo }: Props) {
-  const [selectedTag, setSelectedTag] = useState<Tag | null>(null)
+  const searchParams = useSearchParams()
+  const tag = searchParams.get('tag')
+  const [selectedTag, setSelectedTag] = useState<Tag | null>(
+    tag ? { name: tag } : null,
+  )
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">

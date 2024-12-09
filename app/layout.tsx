@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
 import QueryClientProvider from '@/components/QueryClientProvider'
+import { Toaster } from '@/components/ui/sonner'
 import { APP_NAME } from '@/lib/const'
 import { ThemeProvider } from 'next-themes'
 
@@ -41,6 +42,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryClientProvider>{children}</QueryClientProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
