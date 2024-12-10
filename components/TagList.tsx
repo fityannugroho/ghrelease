@@ -105,8 +105,8 @@ export default function TagList({
   }, [tagsQuery.error, triggerIdle])
 
   return (
-    <div className="border p-4 rounded lg:sticky lg:top-16 lg:z-20 flex flex-col gap-4">
-      <p className="text-lg font-semibold">Tags ({tags.length})</p>
+    <div className="border p-4 rounded lg:sticky lg:top-16 lg:z-20 flex flex-col gap-2">
+      <p className="text-lg font-semibold mb-4">Tags ({tags.length})</p>
 
       {/* Filter tags */}
       <Input
@@ -114,59 +114,46 @@ export default function TagList({
         placeholder="Filter tags"
         value={filter}
         onChange={(e) => setFilter(e.target.value.toLowerCase())}
-        className="w-full border rounded"
+        className="w-full border rounded mb-3"
       />
 
-      {/* Wrap lists and not found status since it won't be shown at the same time */}
-      <div>
-        {tagsQuery.isSuccess &&
-          !tagsQuery.hasNextPage &&
-          filteredTags.length < 1 && (
-            <p className="text-center text-gray-500 dark:text-gray-400 text-sm">
-              No tags found. Try a different filter.
-            </p>
-          )}
-
-        <ScrollArea className="max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
-          <ul className="space-y-2">
-            {tagsQuery.isPending &&
-              Array.from({ length: 8 }).map((_, i) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: This is a skeleton list
-                <Skeleton key={i} className="w-full h-8" />
-              ))}
-
-            {filteredTags.map((tag) => (
-              <li key={tag.name}>
-                <Button
-                  variant={
-                    tag.name === selectedTag?.name ? 'default' : 'outline'
-                  }
-                  onClick={() => {
-                    onTagSelect?.(tag)
-                  }}
-                  className="w-full truncate"
-                >
-                  {tag.name}
-                </Button>
-              </li>
+      <ScrollArea className="max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
+        <ul className="space-y-2">
+          {tagsQuery.isPending &&
+            Array.from({ length: 8 }).map((_, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: This is a skeleton list
+              <Skeleton key={i} className="w-full h-8" />
             ))}
 
-            {/* Load more */}
-            {tagsQuery.hasNextPage && idleCount === 0 && (
-              <div ref={observerTarget} className="h-6">
-                {tagsQuery.isFetchingNextPage && (
-                  <LoaderIcon className="animate-spin h-6 w-6 mx-auto">
-                    <span className="sr-only">Loading...</span>
-                  </LoaderIcon>
-                )}
-              </div>
-            )}
-          </ul>
-        </ScrollArea>
-      </div>
+          {filteredTags.map((tag) => (
+            <li key={tag.name}>
+              <Button
+                variant={tag.name === selectedTag?.name ? 'default' : 'outline'}
+                onClick={() => {
+                  onTagSelect?.(tag)
+                }}
+                className="w-full truncate"
+              >
+                {tag.name}
+              </Button>
+            </li>
+          ))}
+
+          {/* Load more */}
+          {tagsQuery.hasNextPage && idleCount === 0 && (
+            <div ref={observerTarget} className="h-6">
+              {tagsQuery.isFetchingNextPage && (
+                <LoaderIcon className="animate-spin h-6 w-6 mx-auto">
+                  <span className="sr-only">Loading...</span>
+                </LoaderIcon>
+              )}
+            </div>
+          )}
+        </ul>
+      </ScrollArea>
 
       {idleCount > 0 && (
-        <p className="text-warning text-center text-sm">
+        <p className="text-destructive text-center text-sm">
           GitHub API Rate limit exceeded. Retrying in {idleCount} seconds.
         </p>
       )}
@@ -176,6 +163,14 @@ export default function TagList({
           {tagsQuery.error.message}
         </p>
       )}
+
+      {tagsQuery.isSuccess &&
+        !tagsQuery.hasNextPage &&
+        filteredTags.length < 1 && (
+          <p className="text-center text-gray-500 dark:text-gray-400 text-sm">
+            No tags found. Try a different filter.
+          </p>
+        )}
     </div>
   )
 }
