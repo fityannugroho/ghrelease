@@ -19,7 +19,7 @@ export async function generateMetadata({
 }: PageProps<Params, SearchParams>): Promise<Metadata> {
   const { username, repo } = await params
   const title = `${username}/${repo}`
-  const description = `Read and discover GitHub repository releases of ${username}/${repo} with ease.`
+  const description = `Read and discover release notes of ${username}/${repo} repository with ease.`
 
   return {
     title,
