@@ -17,14 +17,18 @@ const geistMono = localFont({
   weight: '100 900',
 })
 
-const title = APP_NAME
-const description = 'Read and discover GitHub repository releases with ease.'
+const title: Metadata['title'] = {
+  template: `%s | ${APP_NAME}`,
+  default: APP_NAME,
+}
+
+const description: Metadata['description'] =
+  'Read and discover GitHub repository releases with ease.'
+
+const images: NonNullable<Metadata['openGraph']>['images'] = '/og-image.png'
 
 export const metadata: Metadata = {
-  title: {
-    template: `%s | ${APP_NAME}`,
-    default: APP_NAME,
-  },
+  title,
   description,
   robots: {
     index: true,
@@ -34,13 +38,14 @@ export const metadata: Metadata = {
     siteName: APP_NAME,
     title,
     description,
-    images: '/og-image.png',
+    images,
   },
   twitter: {
     card: 'summary_large_image',
     site: APP_NAME,
     title,
     description,
+    images,
   },
   keywords: `${APP_NAME}, github, release, release viewer, github repository, github release, tools`,
 }

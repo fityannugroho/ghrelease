@@ -1,6 +1,7 @@
 import type { PageProps } from '@/app/types'
 import ReleaseNotes from '@/components/ReleaseNotes'
 import { getRepo } from '@/lib/github'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -15,12 +16,22 @@ type SearchParams = {
 
 export async function generateMetadata({
   params,
-}: PageProps<Params, SearchParams>) {
+}: PageProps<Params, SearchParams>): Promise<Metadata> {
   const { username, repo } = await params
+  const title = `${username}/${repo}`
+  const description = `Read and discover GitHub repository releases of ${username}/${repo} with ease.`
 
   return {
-    title: `${username}/${repo} releases`,
-    description: `Read and discover GitHub repository releases of ${username}/${repo} with ease.`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+    twitter: {
+      title,
+      description,
+    },
   }
 }
 
