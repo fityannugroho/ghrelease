@@ -104,8 +104,8 @@ export default function TagList({
   }, [tagsQuery.error, triggerIdle])
 
   return (
-    <div className="border p-4 rounded lg:sticky lg:top-16 lg:z-20">
-      <p className="text-lg font-semibold mb-4">Tags ({tags.length})</p>
+    <div className="border p-4 rounded lg:sticky lg:top-16 lg:z-20 flex flex-col gap-4">
+      <p className="text-lg font-semibold">Tags ({tags.length})</p>
 
       {/* Filter tags */}
       <Input
@@ -113,61 +113,66 @@ export default function TagList({
         placeholder="Filter tags"
         value={filter}
         onChange={(e) => setFilter(e.target.value.toLowerCase())}
-        className="w-full p-2 border rounded my-4"
+        className="w-full border rounded"
       />
 
-      <ScrollArea className="mt-2 max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
-        <ul className="space-y-2">
-          {filteredTags.map((tag) => (
-            <li key={tag.name}>
-              <Button
-                variant={tag.name === selectedTag?.name ? 'default' : 'outline'}
-                onClick={() => {
-                  onTagSelect?.(tag)
-                }}
-                className="w-full truncate"
-              >
-                {tag.name}
-              </Button>
-            </li>
-          ))}
+      {/* Wrap lists, loading, and not found status since it won't be shown at the same time */}
+      <div>
+        {tagsQuery.isPending && (
+          <p className="text-center text-sm">Loading tags...</p>
+        )}
 
-          {/* Load more */}
-          {tagsQuery.hasNextPage && idleCount === 0 && (
-            <div ref={observerTarget} className="h-6">
-              {tagsQuery.isFetchingNextPage && (
-                <LoaderIcon className="animate-spin h-6 w-6 mx-auto">
-                  <span className="sr-only">Loading...</span>
-                </LoaderIcon>
-              )}
-            </div>
+        {tagsQuery.isSuccess &&
+          !tagsQuery.hasNextPage &&
+          filteredTags.length < 1 && (
+            <p className="text-center text-gray-500 dark:text-gray-400 text-sm">
+              No tags found. Try a different filter.
+            </p>
           )}
-        </ul>
-      </ScrollArea>
 
-      {tagsQuery.isPending && (
-        <p className="text-center text-sm mt-2">Loading tags...</p>
-      )}
+        <ScrollArea className="max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
+          <ul className="space-y-2">
+            {filteredTags.map((tag) => (
+              <li key={tag.name}>
+                <Button
+                  variant={
+                    tag.name === selectedTag?.name ? 'default' : 'outline'
+                  }
+                  onClick={() => {
+                    onTagSelect?.(tag)
+                  }}
+                  className="w-full truncate"
+                >
+                  {tag.name}
+                </Button>
+              </li>
+            ))}
+
+            {/* Load more */}
+            {tagsQuery.hasNextPage && idleCount === 0 && (
+              <div ref={observerTarget} className="h-6">
+                {tagsQuery.isFetchingNextPage && (
+                  <LoaderIcon className="animate-spin h-6 w-6 mx-auto">
+                    <span className="sr-only">Loading...</span>
+                  </LoaderIcon>
+                )}
+              </div>
+            )}
+          </ul>
+        </ScrollArea>
+      </div>
 
       {idleCount > 0 && (
-        <p className="text-warning text-center text-sm mt-2">
+        <p className="text-warning text-center text-sm">
           GitHub API Rate limit exceeded. Retrying in {idleCount} seconds.
         </p>
       )}
 
       {tagsQuery.isError && !isRateLimitError(tagsQuery.error) && (
-        <p className="text-destructive text-center text-sm mt-2">
+        <p className="text-destructive text-center text-sm">
           {tagsQuery.error.message}
         </p>
       )}
-
-      {tagsQuery.isSuccess &&
-        !tagsQuery.hasNextPage &&
-        filteredTags.length < 1 && (
-          <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-2">
-            No tags found. Try a different filter.
-          </p>
-        )}
     </div>
   )
 }
