@@ -65,7 +65,7 @@ export default function TagList({
   }, [fetchNextPage, tagsQuery.hasNextPage, tagsQuery.isFetchingNextPage])
 
   return (
-    <div className="border p-4 rounded">
+    <div className="border p-4 rounded lg:sticky lg:top-16 lg:z-20">
       <p className="text-lg font-semibold mb-4">Tags ({tags.length})</p>
 
       {/* Filter tags */}
