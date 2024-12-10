@@ -12,6 +12,7 @@ import { LoaderIcon } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
+import { Skeleton } from './ui/skeleton'
 
 type Props = {
   repo: string
@@ -116,12 +117,8 @@ export default function TagList({
         className="w-full border rounded"
       />
 
-      {/* Wrap lists, loading, and not found status since it won't be shown at the same time */}
+      {/* Wrap lists and not found status since it won't be shown at the same time */}
       <div>
-        {tagsQuery.isPending && (
-          <p className="text-center text-sm">Loading tags...</p>
-        )}
-
         {tagsQuery.isSuccess &&
           !tagsQuery.hasNextPage &&
           filteredTags.length < 1 && (
@@ -132,6 +129,12 @@ export default function TagList({
 
         <ScrollArea className="max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
           <ul className="space-y-2">
+            {tagsQuery.isPending &&
+              Array.from({ length: 8 }).map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: This is a skeleton list
+                <Skeleton key={i} className="w-full h-8" />
+              ))}
+
             {filteredTags.map((tag) => (
               <li key={tag.name}>
                 <Button
