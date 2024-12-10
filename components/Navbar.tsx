@@ -69,6 +69,15 @@ export function Navbar() {
 
         {/* Icon group */}
         <div className="flex gap-1 md:order-last">
+          <Button variant="ghost" size="icon" asChild>
+            <Link
+              href="https://github.com/fityannugroho/ghrelease"
+              target="_blank"
+            >
+              <GithubIcon className="h-5 w-5" />
+            </Link>
+          </Button>
+
           <ThemeToggle variant="ghost" />
 
           {/* Mobile menu */}
