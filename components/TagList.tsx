@@ -65,7 +65,7 @@ export default function TagList({
   }, [fetchNextPage, tagsQuery.hasNextPage, tagsQuery.isFetchingNextPage])
 
   return (
-    <div className="border p-4 rounded">
+    <div className="border p-4 rounded lg:sticky lg:top-16 lg:z-20">
       <p className="text-lg font-semibold mb-4">Tags ({tags.length})</p>
 
       {/* Filter tags */}
@@ -77,7 +77,7 @@ export default function TagList({
         className="w-full p-2 border rounded my-4"
       />
 
-      <ScrollArea className="mt-2 max-h-[10rem] lg:max-h-[16rem] overflow-y-auto">
+      <ScrollArea className="mt-2 max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
         <ul className="space-y-2">
           {filteredTags.map((tag) => (
             <li key={tag.name}>
