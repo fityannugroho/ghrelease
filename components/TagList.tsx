@@ -1,12 +1,18 @@
 'use client'
 
-import { MAX_ITEMS_PER_PAGE, type Tag, getTags } from '@/lib/github'
+import {
+  MAX_ITEMS_PER_PAGE,
+  type Tag,
+  getTags,
+  isRateLimitError,
+} from '@/lib/github'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { LoaderIcon } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
+import { Skeleton } from './ui/skeleton'
 
 type Props = {
   repo: string
@@ -20,6 +26,7 @@ export default function TagList({
   onTagSelect,
 }: Props) {
   const [filter, setFilter] = useState<string>('')
+  const [idleCount, setIdleCount] = useState(0)
 
   const { fetchNextPage, ...tagsQuery } = useInfiniteQuery({
     queryKey: ['tags', repo],
@@ -31,6 +38,7 @@ export default function TagList({
       }
       return lastPageParam + 1
     },
+    enabled: idleCount === 0,
   })
 
   const tags = useMemo(() => {
@@ -49,7 +57,8 @@ export default function TagList({
         if (
           entries[0].isIntersecting &&
           tagsQuery.hasNextPage &&
-          !tagsQuery.isFetchingNextPage
+          !tagsQuery.isFetchingNextPage &&
+          idleCount === 0
         ) {
           fetchNextPage()
         }
@@ -62,10 +71,41 @@ export default function TagList({
     }
 
     return () => observer.disconnect()
-  }, [fetchNextPage, tagsQuery.hasNextPage, tagsQuery.isFetchingNextPage])
+  }, [
+    fetchNextPage,
+    tagsQuery.hasNextPage,
+    tagsQuery.isFetchingNextPage,
+    idleCount,
+  ])
+
+  const triggerIdle = useCallback(() => {
+    /** In seconds */
+    const waitIdleTime = 10 * (tagsQuery.errorUpdateCount || 1)
+    setIdleCount(waitIdleTime)
+
+    const timer = setInterval(() => {
+      setIdleCount((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1_000) // 1 second interval
+
+    // Cleanup
+    return () => clearInterval(timer)
+  }, [tagsQuery.errorUpdateCount])
+
+  // Trigger the idle when rate limit error occurs
+  useEffect(() => {
+    if (isRateLimitError(tagsQuery.error)) {
+      triggerIdle()
+    }
+  }, [tagsQuery.error, triggerIdle])
 
   return (
-    <div className="border p-4 rounded lg:sticky lg:top-16 lg:z-20">
+    <div className="border p-4 rounded lg:sticky lg:top-16 lg:z-20 flex flex-col gap-2">
       <p className="text-lg font-semibold mb-4">Tags ({tags.length})</p>
 
       {/* Filter tags */}
@@ -74,11 +114,17 @@ export default function TagList({
         placeholder="Filter tags"
         value={filter}
         onChange={(e) => setFilter(e.target.value.toLowerCase())}
-        className="w-full p-2 border rounded my-4"
+        className="w-full border rounded mb-3"
       />
 
-      <ScrollArea className="mt-2 max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
+      <ScrollArea className="max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
         <ul className="space-y-2">
+          {tagsQuery.isPending &&
+            Array.from({ length: 8 }).map((_, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: This is a skeleton list
+              <Skeleton key={i} className="w-full h-8" />
+            ))}
+
           {filteredTags.map((tag) => (
             <li key={tag.name}>
               <Button
@@ -94,7 +140,7 @@ export default function TagList({
           ))}
 
           {/* Load more */}
-          {tagsQuery.hasNextPage && (
+          {tagsQuery.hasNextPage && idleCount === 0 && (
             <div ref={observerTarget} className="h-6">
               {tagsQuery.isFetchingNextPage && (
                 <LoaderIcon className="animate-spin h-6 w-6 mx-auto">
@@ -106,12 +152,14 @@ export default function TagList({
         </ul>
       </ScrollArea>
 
-      {tagsQuery.isPending && (
-        <p className="text-center text-sm mt-2">Loading tags...</p>
+      {idleCount > 0 && (
+        <p className="text-destructive text-center text-sm">
+          GitHub API Rate limit exceeded. Retrying in {idleCount} seconds.
+        </p>
       )}
 
-      {tagsQuery.isError && (
-        <p className="text-destructive text-center text-sm mt-2">
+      {tagsQuery.isError && !isRateLimitError(tagsQuery.error) && (
+        <p className="text-destructive text-center text-sm">
           {tagsQuery.error.message}
         </p>
       )}
@@ -119,7 +167,7 @@ export default function TagList({
       {tagsQuery.isSuccess &&
         !tagsQuery.hasNextPage &&
         filteredTags.length < 1 && (
-          <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-2">
+          <p className="text-center text-gray-500 dark:text-gray-400 text-sm">
             No tags found. Try a different filter.
           </p>
         )}
