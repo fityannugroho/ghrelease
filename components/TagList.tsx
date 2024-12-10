@@ -79,7 +79,7 @@ export default function TagList({
 
   const triggerIdle = useCallback(() => {
     /** In seconds */
-    const waitIdleTime = 10
+    const waitIdleTime = 10 * (tagsQuery.errorUpdateCount || 1)
     setIdleCount(waitIdleTime)
 
     const timer = setInterval(() => {
@@ -94,7 +94,7 @@ export default function TagList({
 
     // Cleanup
     return () => clearInterval(timer)
-  }, [])
+  }, [tagsQuery.errorUpdateCount])
 
   // Trigger the idle when rate limit error occurs
   useEffect(() => {
@@ -151,7 +151,7 @@ export default function TagList({
 
       {idleCount > 0 && (
         <p className="text-warning text-center text-sm mt-2">
-          Rate limit exceeded. Retrying in {idleCount} seconds.
+          GitHub API Rate limit exceeded. Retrying in {idleCount} seconds.
         </p>
       )}
 
