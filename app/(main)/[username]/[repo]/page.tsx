@@ -49,7 +49,7 @@ export default async function ReleasePage({ params }: PageProps<Params>) {
           height={48}
           className="w-12 h-12 rounded-full"
         />
-        <div className="">
+        <div className="overflow-x-hidden">
           {/* Avatar */}
           <h1 className="text-3xl font-bold mb-2">
             <Link
@@ -57,7 +57,7 @@ export default async function ReleasePage({ params }: PageProps<Params>) {
               target="_blank"
               className="hover:underline"
             >
-              <code>
+              <code className="block line-clamp-2 text-ellipsis">
                 {username}/{repo}
               </code>
             </Link>

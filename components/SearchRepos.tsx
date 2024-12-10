@@ -7,6 +7,7 @@ import { debounce } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useState } from 'react'
+import { Skeleton } from './ui/skeleton'
 
 export default function SearchRepos() {
   const [query, setQuery] = useState('')
@@ -23,16 +24,19 @@ export default function SearchRepos() {
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="flex gap-2 mb-4">
+      <div className="flex flex-col gap-1 mb-4">
         <Input
           type="text"
           placeholder="Search repositories..."
           onChange={(e) => handleSearch(e.target.value)}
           className="flex-grow"
         />
+        {!reposQuery.data && (
+          <p className="text-sm text-muted-foreground pl-1">
+            e.g. <code className="font-semibold">vercel/next.js</code>
+          </p>
+        )}
       </div>
-
-      {reposQuery.isLoading && <p>Loading...</p>}
 
       {reposQuery.isError && (
         <p className="text-destructive">
@@ -44,37 +48,43 @@ export default function SearchRepos() {
         <p>No repositories found.</p>
       )}
 
-      {reposQuery.isSuccess && reposQuery.data.length > 0 && (
-        <ul className="space-y-2">
-          {reposQuery.data?.map((repo) => (
-            <li
-              key={repo.id}
-              className="border rounded-lg p-4 hover:bg-accent transition-colors"
-            >
-              <Link
-                href={`/${repo.full_name}`}
-                className="flex items-center gap-4"
-              >
-                <Avatar>
-                  <AvatarImage
-                    src={repo.owner.avatar_url}
-                    alt={repo.owner.login}
-                  />
-                  <AvatarFallback>
-                    {repo.owner.login[0].toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h2 className="text-lg font-semibold">{repo.full_name}</h2>
-                  <p className="text-sm text-muted-foreground">
-                    {repo.description}
-                  </p>
-                </div>
-              </Link>
-            </li>
+      <ul className="space-y-2">
+        {reposQuery.isLoading &&
+          Array.from({ length: 5 }).map((_, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            <Skeleton key={i} className="w-full h-20" />
           ))}
-        </ul>
-      )}
+
+        {reposQuery.data?.map((repo) => (
+          <li
+            key={repo.id}
+            className="border rounded-lg p-4 hover:bg-accent transition-colors"
+          >
+            <Link
+              href={`/${repo.full_name}`}
+              className="flex items-center gap-4"
+            >
+              <Avatar>
+                <AvatarImage
+                  src={repo.owner.avatar_url}
+                  alt={repo.owner.login}
+                />
+                <AvatarFallback>
+                  {repo.owner.login[0].toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="overflow-hidden">
+                <h2 className="font-semibold mb-1 block line-clamp-2 text-ellipsis">
+                  {repo.full_name}
+                </h2>
+                <p className="text-sm text-muted-foreground line-clamp-3">
+                  {repo.description}
+                </p>
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
