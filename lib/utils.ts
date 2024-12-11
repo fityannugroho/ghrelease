@@ -34,7 +34,8 @@ export function debounce<T extends unknown[]>(
   }
 }
 
-export const NEXT_NOT_FOUND_ERR_MSG = 'NEXT_NOT_FOUND'
+// See https://github.com/vercel/next.js/blob/dafcd43/packages/next/src/client/components/not-found.ts#L21
+const NEXT_NOT_FOUND_ERR_MSG = 'NEXT_HTTP_ERROR_FALLBACK;404'
 
 export function isNextNotFoundError(error: unknown) {
   return error instanceof Error && error.message === NEXT_NOT_FOUND_ERR_MSG
