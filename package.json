@@ -1,6 +1,6 @@
 {
   "name": "ghrelease",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GitHub Release page with better UX. Read and discover release notes of any GitHub public repository with ease.",
   "repository": {
     "type": "git",
