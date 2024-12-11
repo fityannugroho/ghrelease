@@ -1,7 +1,22 @@
 {
   "name": "ghrelease",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "GitHub Release page with better UX. Read and discover release notes of any GitHub public repository with ease.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fityannugroho/ghrelease.git"
+  },
+  "author": "fityannugroho (https://github.com/fityannugroho)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fityannugroho/ghrelease/issues"
+  },
+  "homepage": "https://github.com/fityannugroho/ghrelease#readme",
+  "funding": {
+    "url": "https://github.com/sponsors/fityannugroho",
+    "type": "github"
+  },
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -17,13 +32,13 @@
     "@radix-ui/react-scroll-area": "^1.2.1",
     "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.0",
-    "@tanstack/react-query": "^5.62.3",
-    "@tanstack/react-query-devtools": "^5.62.3",
+    "@tanstack/react-query": "^5.62.7",
+    "@tanstack/react-query-devtools": "^5.62.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "1.0.0",
+    "cmdk": "1.0.4",
     "lucide-react": "^0.468.0",
-    "next": "15.0.4",
+    "next": "15.1.0",
     "next-themes": "^0.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -39,9 +54,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.0.4",
+    "eslint-config-next": "15.1.0",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.16",
     "typescript": "^5"
   }
 }

@@ -1,6 +1,7 @@
 import type { PageProps } from '@/app/types'
 import ReleaseNotes from '@/components/ReleaseNotes'
 import { getRepo } from '@/lib/github'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -15,12 +16,22 @@ type SearchParams = {
 
 export async function generateMetadata({
   params,
-}: PageProps<Params, SearchParams>) {
+}: PageProps<Params, SearchParams>): Promise<Metadata> {
   const { username, repo } = await params
+  const title = `${username}/${repo}`
+  const description = `Read and discover release notes of ${username}/${repo} repository with ease.`
 
   return {
-    title: `${username}/${repo} releases`,
-    description: `Read and discover GitHub repository releases of ${username}/${repo} with ease.`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+    twitter: {
+      title,
+      description,
+    },
   }
 }
 
@@ -38,7 +49,7 @@ export default async function ReleasePage({ params }: PageProps<Params>) {
           height={48}
           className="w-12 h-12 rounded-full"
         />
-        <div className="">
+        <div className="overflow-x-hidden">
           {/* Avatar */}
           <h1 className="text-3xl font-bold mb-2">
             <Link
@@ -46,7 +57,7 @@ export default async function ReleasePage({ params }: PageProps<Params>) {
               target="_blank"
               className="hover:underline"
             >
-              <code>
+              <code className="block line-clamp-2 text-ellipsis">
                 {username}/{repo}
               </code>
             </Link>
