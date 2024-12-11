@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     description,
     images,
   },
-  keywords: `${APP_NAME}, github, release, release viewer, github repository, github release, tools`,
+  keywords: `${APP_NAME}, github, release, release viewer, reader, github repository, github tags, github versions, github release, web tools`,
 }
 
 export default function RootLayout({

@@ -1,7 +1,22 @@
 {
   "name": "ghrelease",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "GitHub Release page with better UX. Read and discover release notes of any GitHub public repository with ease.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fityannugroho/ghrelease.git"
+  },
+  "author": "fityannugroho (https://github.com/fityannugroho)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fityannugroho/ghrelease/issues"
+  },
+  "homepage": "https://github.com/fityannugroho/ghrelease#readme",
+  "funding": {
+    "url": "https://github.com/sponsors/fityannugroho",
+    "type": "github"
+  },
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
