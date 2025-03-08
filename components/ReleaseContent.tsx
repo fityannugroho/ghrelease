@@ -6,6 +6,8 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { ClockIcon, LinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkGithub from 'remark-github'
 import { toast } from 'sonner'
 import { Button } from './ui/button'
 
@@ -68,7 +70,13 @@ export default function ReleaseContent({ repo, tag }: Props) {
 
       <hr className="mt-4 mb-6" />
 
-      <ReactMarkdown className="prose prose-sm dark:prose-invert max-w-none">
+      <ReactMarkdown
+        className="prose prose-sm dark:prose-invert max-w-none"
+        remarkPlugins={[
+          remarkGfm,
+          [remarkGithub, { repository: repo, mentionStrong: false }],
+        ]}
+      >
         {release.body}
       </ReactMarkdown>
     </>
