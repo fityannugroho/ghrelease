@@ -7,13 +7,29 @@ import dayjs from 'dayjs'
 import { ClockIcon, LinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import remarkGithub from 'remark-github'
+import remarkGithub, {
+  defaultBuildUrl,
+  type Options as RemarkGithubOptions,
+} from 'remark-github'
 import { toast } from 'sonner'
 import { Button } from './ui/button'
 
 type Props = {
   repo: string
   tag?: string
+}
+
+const remarkGithubConfig: Readonly<RemarkGithubOptions> = {
+  mentionStrong: false,
+  buildUrl: (values) => {
+    // Don't link package names, e.g. `@types/node`
+    // Github username can't have `/` character
+    if (values.type === 'mention' && values.user.includes('/')) {
+      return false
+    }
+
+    return defaultBuildUrl(values)
+  },
 }
 
 export default function ReleaseContent({ repo, tag }: Props) {
@@ -74,7 +90,13 @@ export default function ReleaseContent({ repo, tag }: Props) {
         className="prose prose-sm dark:prose-invert max-w-none"
         remarkPlugins={[
           remarkGfm,
-          [remarkGithub, { repository: repo, mentionStrong: false }],
+          [
+            remarkGithub,
+            {
+              ...remarkGithubConfig,
+              repository: repo,
+            },
+          ],
         ]}
       >
         {release.body}
