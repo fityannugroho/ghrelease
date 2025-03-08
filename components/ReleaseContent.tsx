@@ -3,7 +3,8 @@
 import { getRelease } from '@/lib/github'
 import { isNextNotFoundError } from '@/lib/utils'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { LinkIcon } from 'lucide-react'
+import dayjs from 'dayjs'
+import { ClockIcon, LinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
 import { Button } from './ui/button'
@@ -34,7 +35,7 @@ export default function ReleaseContent({ repo, tag }: Props) {
 
   return (
     <>
-      <div className="mb-4 flex gap-2">
+      <div className="mb-2 flex gap-2">
         <p className="text-2xl font-semibold">{release.tag_name}</p>
         <Button
           size={null}
@@ -55,6 +56,18 @@ export default function ReleaseContent({ repo, tag }: Props) {
           <span className="sr-only">Copy Link</span>
         </Button>
       </div>
+
+      <div className="flex items-center gap-4">
+        <div className="flex gap-2 items-center">
+          <ClockIcon className="h-4 w-4" />
+          <span className="text-sm">
+            {dayjs(release.published_at).format('D MMMM YYYY HH:mm A (Z)')}
+          </span>
+        </div>
+      </div>
+
+      <hr className="mt-4 mb-6" />
+
       <ReactMarkdown className="prose prose-sm dark:prose-invert max-w-none">
         {release.body}
       </ReactMarkdown>
