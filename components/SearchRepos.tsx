@@ -29,7 +29,7 @@ export default function SearchRepos() {
           type="text"
           placeholder="Search repositories..."
           onChange={(e) => handleSearch(e.target.value)}
-          className="flex-grow"
+          className="grow"
         />
         {!reposQuery.data && (
           <p className="text-sm text-muted-foreground pl-1">
