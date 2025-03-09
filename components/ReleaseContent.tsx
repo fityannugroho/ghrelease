@@ -86,21 +86,22 @@ export default function ReleaseContent({ repo, tag }: Props) {
 
       <hr className="mt-4 mb-6" />
 
-      <ReactMarkdown
-        className="prose prose-sm dark:prose-invert max-w-none"
-        remarkPlugins={[
-          remarkGfm,
-          [
-            remarkGithub,
-            {
-              ...remarkGithubConfig,
-              repository: repo,
-            },
-          ],
-        ]}
-      >
-        {release.body}
-      </ReactMarkdown>
+      <div className="prose prose-sm dark:prose-invert max-w-none">
+        <ReactMarkdown
+          remarkPlugins={[
+            remarkGfm,
+            [
+              remarkGithub,
+              {
+                ...remarkGithubConfig,
+                repository: repo,
+              },
+            ],
+          ]}
+        >
+          {release.body}
+        </ReactMarkdown>
+      </div>
     </>
   )
 }

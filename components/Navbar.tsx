@@ -37,7 +37,7 @@ export function Navbar() {
   return (
     <nav
       className={
-        'sticky top-0 z-50 py-2 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
+        'sticky top-0 z-50 py-2 border-b border-border/40 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60'
       }
     >
       <div className="container flex items-center justify-between flex-wrap mx-auto px-4">
@@ -51,7 +51,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          <ul className="hidden md:flex gap-4 lg:gap-6 text-sm *:text-foreground/60 hover:*:text-foreground">
+          <ul className="hidden md:flex gap-4 lg:gap-6 text-sm *:text-foreground/60 *:hover:text-foreground">
             {menuItems.map((item) => (
               <li key={item.href}>
                 <Link
