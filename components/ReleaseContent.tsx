@@ -12,6 +12,7 @@ import remarkGithub, {
   type Options as RemarkGithubOptions,
 } from 'remark-github'
 import { toast } from 'sonner'
+import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 
 type Props = {
@@ -53,7 +54,7 @@ export default function ReleaseContent({ repo, tag }: Props) {
 
   return (
     <>
-      <div className="mb-2 flex gap-2">
+      <div className="mb-2 flex items-center gap-2">
         <p className="text-2xl font-semibold">{release.tag_name}</p>
         <Button
           size={null}
@@ -75,13 +76,15 @@ export default function ReleaseContent({ repo, tag }: Props) {
         </Button>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 flex-wrap">
         <div className="flex gap-2 items-center">
           <ClockIcon className="h-4 w-4" />
           <span className="text-sm">
             {dayjs(release.published_at).format('D MMMM YYYY HH:mm A (Z)')}
           </span>
         </div>
+
+        {release.prerelease && <Badge variant="warning">Pre-release</Badge>}
       </div>
 
       <hr className="mt-4 mb-6" />
