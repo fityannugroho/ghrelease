@@ -14,6 +14,7 @@ export type Release = {
   isSelected: boolean
   created_at: string
   published_at: string
+  prerelease: boolean
 }
 
 export type Tag = {
@@ -79,6 +80,7 @@ export async function getRelease(repo: string, tag?: string): Promise<Release> {
     isSelected: false,
     created_at: data.created_at,
     published_at: data.published_at,
+    prerelease: data.prerelease,
   }
 }
 
