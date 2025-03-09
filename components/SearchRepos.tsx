@@ -23,8 +23,8 @@ export default function SearchRepos() {
   }, 500)
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="flex flex-col gap-1 mb-4">
+    <div className="w-full">
+      <div className="max-w-2xl mx-auto mb-6 lg:mb-10 flex flex-col gap-1">
         <Input
           type="text"
           placeholder="Search repositories..."
@@ -39,19 +39,19 @@ export default function SearchRepos() {
       </div>
 
       {reposQuery.isError && (
-        <p className="text-destructive">
+        <p className="text-destructive text-center">
           An error occurred: {reposQuery.error.message}
         </p>
       )}
 
       {reposQuery.isSuccess && reposQuery.data.length === 0 && (
-        <p>No repositories found.</p>
+        <p className="text-center">No repositories found.</p>
       )}
 
-      <ul className="space-y-2">
+      <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {reposQuery.isLoading &&
-          Array.from({ length: 5 }).map((_, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          Array.from({ length: 6 }).map((_, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: this is a skeleton
             <Skeleton key={i} className="w-full h-20" />
           ))}
 
