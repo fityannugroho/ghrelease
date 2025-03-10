@@ -1,7 +1,7 @@
 'use client'
 
 import { APP_NAME, SHORT_APP_NAME } from '@/lib/const'
-import { HandHeartIcon, MenuIcon } from 'lucide-react'
+import { HeartHandshakeIcon, MenuIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
@@ -24,10 +24,15 @@ type MenuItem = {
 
 const menuItems: MenuItem[] = [
   {
-    href: 'https://trakteer.id/fityannugroho/tip',
-    label: 'Support',
+    href: 'https://github.com/fityannugroho/ghrelease',
+    label: 'Source Code',
     target: '_blank',
-    accessories: <HandHeartIcon className="h-5 w-5" />,
+  },
+  {
+    href: 'https://linktr.ee/fityannugroho',
+    label: 'Support Me',
+    target: '_blank',
+    accessories: <HeartHandshakeIcon className="h-5 w-5" />,
   },
 ]
 
@@ -42,7 +47,7 @@ export function Navbar() {
     >
       <div className="container flex items-center justify-between flex-wrap mx-auto px-4">
         {/* Left */}
-        <div className="flex items-center gap-6 lg:gap-8">
+        <div className="flex items-center gap-10">
           {/* Logo */}
           <div className="flex items-center gap-4 order-first">
             <Link href="/" className="flex items-center gap-2">
@@ -51,7 +56,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          <ul className="hidden md:flex gap-4 lg:gap-6 text-sm *:text-foreground/60 *:hover:text-foreground">
+          <ul className="hidden md:flex gap-4 lg:gap-6 text-sm *:text-foreground/70 *:hover:text-foreground *:focus:text-foreground">
             {menuItems.map((item) => (
               <li key={item.href}>
                 <Link
@@ -69,15 +74,6 @@ export function Navbar() {
 
         {/* Icon group */}
         <div className="flex gap-1 md:order-last">
-          <Button variant="ghost" size="icon" asChild>
-            <Link
-              href="https://github.com/fityannugroho/ghrelease"
-              target="_blank"
-            >
-              <GithubIcon className="h-5 w-5" />
-            </Link>
-          </Button>
-
           <ThemeToggle variant="ghost" />
 
           {/* Mobile menu */}
@@ -91,7 +87,7 @@ export function Navbar() {
 
             <SheetContent side="right">
               <SheetHeader>
-                <SheetTitle>{APP_NAME}</SheetTitle>
+                <SheetTitle className="sr-only">{APP_NAME}</SheetTitle>
               </SheetHeader>
               <ul className="flex flex-col gap-4 mt-8">
                 {menuItems.map((item) => (
@@ -99,7 +95,7 @@ export function Navbar() {
                     <Link
                       href={item.href}
                       target={item.target}
-                      className="flex items-center gap-2 text-lg"
+                      className="flex items-center gap-2 text-lg text-foreground/70 hover:text-foreground focus:text-foreground"
                       onClick={() => setIsOpen(false)}
                     >
                       {item.label}
