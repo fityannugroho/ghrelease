@@ -12,7 +12,7 @@ export function Footer() {
         <div className="text-center text-xs md:text-sm text-foreground/70">
           {/* Copyright and info */}
           <p className="mt-1">
-            © {year}, built with{' '}
+            &copy; {year}, built with{' '}
             <span role="img" aria-label="coffee">
               <CoffeeIcon className="inline mx-0.5 h-4 w-4" />
             </span>{' '}
