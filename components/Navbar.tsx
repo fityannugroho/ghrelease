@@ -52,7 +52,7 @@ export function Navbar() {
           <div className="flex items-center gap-4 order-first">
             <Link href="/" className="flex items-center gap-2">
               <GithubIcon className="w-6 h-6" />
-              <span className="text-primary">{SHORT_APP_NAME}</span>
+              <span className="text-primary font-bold">{SHORT_APP_NAME}</span>
             </Link>
           </div>
 
