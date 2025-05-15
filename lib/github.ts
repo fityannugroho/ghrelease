@@ -35,10 +35,21 @@ async function fetchGitHub(endpoint: string) {
   const response = await fetch(`${GITHUB_API_URL}${endpoint}`, {
     headers: {
       Accept: 'application/vnd.github+json',
+      'User-Agent': 'ghrelease-app',
     },
     next: { revalidate: 60 }, // Revalidate cache every 60 seconds
   })
+
+  const contentType = response.headers.get('content-type') || ''
+
+  if (!contentType.includes('application/json')) {
+    const text = await response.text()
+    console.error('Non-JSON response:', text)
+    throw new Error('GitHub API did not return JSON')
+  }
+
   const result = await response.json()
+
   if (!response.ok) {
     if (response.status === 404) {
       notFound()
