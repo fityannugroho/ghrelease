@@ -20,6 +20,14 @@
     }
   ],
 
+  "routes": [
+    // Replace with your actual domain
+    {
+      "pattern": "ghrelease.fityan.tech",
+      "custom_domain": true
+    }
+  ],
+
   "kv_namespaces": [
     // KV incremental cache
     {

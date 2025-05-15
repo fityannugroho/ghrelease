@@ -7,7 +7,15 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": ["node_modules", "dist", "coverage", ".next"]
+    "ignore": [
+      "node_modules",
+      "dist",
+      "coverage",
+      ".next",
+      ".wrangler",
+      ".open-next",
+      "cloudflare-env.d.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
