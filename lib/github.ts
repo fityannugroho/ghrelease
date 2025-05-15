@@ -31,14 +31,24 @@ export function isRateLimitError(error: unknown) {
   return error instanceof Error && error.message === RATE_LIMIT_ERR_MSG
 }
 
-async function fetchGitHub(endpoint: string) {
+async function fetchGitHub<T extends object>(endpoint: string) {
   const response = await fetch(`${GITHUB_API_URL}${endpoint}`, {
     headers: {
       Accept: 'application/vnd.github+json',
     },
     next: { revalidate: 60 }, // Revalidate cache every 60 seconds
   })
-  const result = await response.json()
+
+  const contentType = response.headers.get('content-type') || ''
+
+  if (!contentType.includes('application/json')) {
+    const text = await response.text()
+    console.error('Non-JSON response:', text)
+    throw new Error('GitHub API did not return JSON')
+  }
+
+  const result = (await response.json()) as T
+
   if (!response.ok) {
     if (response.status === 404) {
       notFound()
@@ -46,7 +56,11 @@ async function fetchGitHub(endpoint: string) {
     if (response.status === 403) {
       throw new Error(RATE_LIMIT_ERR_MSG)
     }
-    throw new Error(`GitHub API error: ${result.message} (${response.status})`)
+    throw new Error(
+      `GitHub API error: ${
+        'message' in result ? result.message : 'unknown error'
+      } (${response.status})`,
+    )
   }
   return result
 }
