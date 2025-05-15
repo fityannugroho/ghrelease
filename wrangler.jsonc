@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "ghrelease",
-  "compatibility_date": "2024-12-30",
+  "compatibility_date": "2025-05-15",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": ".open-next/assets",
@@ -27,6 +27,11 @@
       "custom_domain": true
     }
   ],
+
+  "vars": {
+    // Replace with your actual domain
+    "NEXT_PUBLIC_BASE_URL": "https://ghrelease.fityan.tech"
+  },
 
   "kv_namespaces": [
     // KV incremental cache
