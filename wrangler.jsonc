@@ -3,7 +3,10 @@
   "main": ".open-next/worker.js",
   "name": "ghrelease",
   "compatibility_date": "2025-05-15",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat",
+    "nodejs_compat_populate_process_env"
+  ],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
@@ -19,19 +22,6 @@
       "service": "ghrelease"
     }
   ],
-
-  "routes": [
-    // Replace with your actual domain
-    {
-      "pattern": "ghrelease.fityan.tech",
-      "custom_domain": true
-    }
-  ],
-
-  "vars": {
-    // Replace with your actual domain
-    "NEXT_PUBLIC_BASE_URL": "https://ghrelease.fityan.tech"
-  },
 
   "kv_namespaces": [
     // KV incremental cache

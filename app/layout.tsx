@@ -17,7 +17,7 @@ const geistMono = localFont({
   weight: '100 900',
 })
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 const title: Metadata['title'] = {
   template: `%s | ${APP_NAME}`,
@@ -30,7 +30,7 @@ const description: Metadata['description'] =
 const images: NonNullable<Metadata['openGraph']>['images'] = '/og-image.png'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
+  metadataBase: BASE_URL ? new URL(BASE_URL) : null,
   title,
   description,
   robots: {
