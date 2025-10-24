@@ -1,12 +1,12 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+import { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { searchRepos } from '@/lib/github'
 import { debounce } from '@/lib/utils'
-import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
-import { useState } from 'react'
 import { Skeleton } from './ui/skeleton'
 
 export default function SearchRepos() {

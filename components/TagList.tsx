@@ -1,15 +1,15 @@
 'use client'
 
-import {
-  MAX_ITEMS_PER_PAGE,
-  type Tag,
-  getTags,
-  isRateLimitError,
-} from '@/lib/github'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { LoaderIcon } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  getTags,
+  isRateLimitError,
+  MAX_ITEMS_PER_PAGE,
+  type Tag,
+} from '@/lib/github'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Skeleton } from './ui/skeleton'
