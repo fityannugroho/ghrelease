@@ -57,5 +57,10 @@
       "attributePosition": "auto",
       "bracketSpacing": true
     }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   }
 }
