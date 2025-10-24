@@ -1,8 +1,8 @@
 'use client'
 
-import type { Tag } from '@/lib/github'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
+import type { Tag } from '@/lib/github'
 import ReleaseContent from './ReleaseContent'
 import TagList from './TagList'
 

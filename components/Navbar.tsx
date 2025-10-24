@@ -1,11 +1,11 @@
 'use client'
 
-import { APP_NAME, SHORT_APP_NAME } from '@/lib/const'
 import { HeartHandshakeIcon, MenuIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
-import ThemeToggle from './ThemeToggle'
+import { APP_NAME, SHORT_APP_NAME } from '@/lib/const'
 import GithubIcon from './icons/GithubIcon'
+import ThemeToggle from './ThemeToggle'
 import { Button } from './ui/button'
 import {
   Sheet,

@@ -1,10 +1,10 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { isRateLimitError } from '@/lib/github'
 import { TriangleAlertIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { isRateLimitError } from '@/lib/github'
 
 export default function Error({
   error,

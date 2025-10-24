@@ -1,9 +1,9 @@
-import type { PageProps } from '@/app/types'
-import ReleaseNotes from '@/components/ReleaseNotes'
-import { getRepo } from '@/lib/github'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import type { PageProps } from '@/app/types'
+import ReleaseNotes from '@/components/ReleaseNotes'
+import { getRepo } from '@/lib/github'
 
 type Params = {
   username: string

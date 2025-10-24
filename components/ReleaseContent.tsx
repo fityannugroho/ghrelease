@@ -1,7 +1,5 @@
 'use client'
 
-import { getRelease } from '@/lib/github'
-import { isNextNotFoundError } from '@/lib/utils'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { ClockIcon, LinkIcon } from 'lucide-react'
@@ -12,6 +10,8 @@ import remarkGithub, {
   type Options as RemarkGithubOptions,
 } from 'remark-github'
 import { toast } from 'sonner'
+import { getRelease } from '@/lib/github'
+import { isNextNotFoundError } from '@/lib/utils'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 
