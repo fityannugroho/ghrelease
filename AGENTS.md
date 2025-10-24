@@ -5,14 +5,14 @@
 **ghrelease** is a GitHub Release Viewer - a Next.js web application that provides a better UX for reading and discovering release notes of any GitHub public repository. It's a small-to-medium sized project with ~28 TypeScript/TSX source files and ~46 total files (excluding dependencies).
 
 **Tech Stack:**
-- Next.js 15.5.6 (App Router) + React 19
+- Next.js 16.0.0 (App Router) + React 19.2
 - TypeScript 5
 - Tailwind CSS 4 with Shadcn UI components
 - Tanstack Query for data fetching
 - Biome for linting/formatting
 
 **Runtime Requirements:**
-- Node.js >= 18.18.0 (tested with 18.18, 20, 22)
+- Node.js >= 20.9.0 (tested with 20, 22)
 - pnpm >= 9.0.0
 
 ## Critical Build & Validation Workflow
@@ -30,8 +30,7 @@
    ```bash
    pnpm lint
    ```
-   - Runs both ESLint (`next lint`) and Biome (`biome check .`)
-   - Note: `next lint` shows a deprecation warning - this is expected and safe to ignore
+   - Runs Biome only (`biome check .`)
    - Run time: ~20ms (Biome is very fast)
    - Must pass with no errors before building
 
@@ -39,7 +38,7 @@
    ```bash
    pnpm lint:fix
    ```
-   - Runs `next lint` then `biome check --write .`
+   - Runs `biome check --write .`
    - Use this for formatting and auto-fixable issues
 
 4. **Build the project**:
@@ -65,7 +64,7 @@
 ```bash
 pnpm dev
 ```
-- Starts development server with Turbopack (fast refresh)
+- Starts development server with Turbopack (default in Next.js 16)
 - Runs on http://localhost:3000 (or next available port)
 - Ready in ~2 seconds
 
@@ -81,7 +80,7 @@ The app works without environment variables for local development.
 
 The CI workflow (`.github/workflows/ci.yml`) runs on every push to `main` and all PRs:
 
-1. Tests against Node.js 18.18, 20, and 22 (matrix build)
+1. Tests against Node.js 20 and 22 (matrix build)
 2. Installs dependencies with `pnpm install --frozen-lockfile`
 3. Runs `pnpm lint`
 4. Runs `pnpm build`
@@ -170,7 +169,7 @@ Your changes MUST pass all three steps without errors to be mergeable.
 
 1. **Build warnings**: The `metadataBase` warning is expected - ignore it
 2. **Port conflicts**: Dev server auto-selects next available port if 3000 is taken
-3. **`next lint` deprecation**: Warning is harmless, migration not required
+3. **Turbopack by default**: No need for `--turbopack` flag in Next.js 16
 4. **Frozen lockfile**: Never use `pnpm add` or `pnpm install` without regenerating lockfile
 5. **Client vs Server**: Remember to add `'use client'` for hooks, browser APIs, event handlers
 
@@ -187,7 +186,7 @@ Before submitting changes, verify:
 ## Testing
 
 **No formal test suite exists.** Validation is done through:
-1. Linting (ESLint + Biome)
+1. Linting (Biome only)
 2. Type checking (TypeScript via build)
 3. Build success
 4. Smoke test (server starts and responds)
