@@ -25,18 +25,19 @@ export default function Error({
         <span className="text-2xl font-bold">Error!</span>
       </div>
 
-      <div className="text-center text-pretty font-medium mb-6">
+      <p className="text-center text-pretty font-medium mb-6 max-w-xl">
         {isRateLimitError(error) ? (
-          <p>
+          <>
             <b>You have reached the rate limit of the GitHub API.</b> Please try
             again later.
-          </p>
+          </>
         ) : (
-          <p>
-            Something went wrong. Please try again later or contact support.
-          </p>
+          <>
+            Something went wrong. Please check your connection and try again. If
+            error persists, contact support.
+          </>
         )}
-      </div>
+      </p>
 
       <div className="flex justify-center mb-4 gap-2">
         <Button asChild variant="outline">
