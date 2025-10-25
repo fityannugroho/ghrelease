@@ -1,12 +1,12 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+import { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { searchRepos } from '@/lib/github'
 import { debounce } from '@/lib/utils'
-import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
-import { useState } from 'react'
 import { Skeleton } from './ui/skeleton'
 
 export default function SearchRepos() {
@@ -51,7 +51,6 @@ export default function SearchRepos() {
       <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {reposQuery.isLoading &&
           Array.from({ length: 6 }).map((_, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: this is a skeleton
             <Skeleton key={i} className="w-full h-20" />
           ))}
 
