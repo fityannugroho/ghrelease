@@ -117,7 +117,7 @@ export default function TagList({
         className="w-full border rounded mb-3"
       />
 
-      <ScrollArea className="max-h-[10rem] lg:max-h-[20rem] overflow-y-auto">
+      <ScrollArea className="max-h-40 lg:max-h-80 overflow-y-auto">
         <ul className="space-y-2">
           {tagsQuery.isPending &&
             Array.from({ length: 8 }).map((_, i) => (
