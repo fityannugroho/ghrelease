@@ -3,7 +3,6 @@
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
 import { useState } from 'react'
-import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
@@ -30,7 +29,15 @@ const githubTokenSchema = z.object({
     ),
 })
 
-export default function AddGithubTokenDialog() {
+export type AddGithubTokenDialogProps = {
+  onSuccess?: () => void
+  onError?: (error: unknown) => void
+}
+
+export default function AddGithubTokenDialog({
+  onSuccess,
+  onError,
+}: AddGithubTokenDialogProps) {
   const [open, setOpen] = useState(false)
 
   const form = useForm({
@@ -46,15 +53,9 @@ export default function AddGithubTokenDialog() {
         setStoredGithubToken(trimmedToken)
         form.reset()
         setOpen(false)
-        toast.success('GitHub token saved successfully!', {
-          action: {
-            label: 'Reload page',
-            onClick: () => window.location.reload(),
-          },
-        })
+        onSuccess?.()
       } catch (error) {
-        toast.error('Failed to store GitHub token')
-        console.error('Failed to store GitHub token', error)
+        onError?.(error)
       }
     },
   })
