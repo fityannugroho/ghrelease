@@ -44,7 +44,6 @@ async function fetchGitHub<T extends object>(endpoint: string) {
 
   const response = await fetch(`${GITHUB_API_URL}${endpoint}`, {
     headers,
-    next: { revalidate: 60 }, // Revalidate cache every 60 seconds
   })
 
   const contentType = response.headers.get('content-type') || ''

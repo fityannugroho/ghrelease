@@ -3,6 +3,7 @@
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,41 +23,44 @@ import { setStoredGithubToken } from '@/lib/tokenStorage'
 const githubTokenSchema = z.object({
   token: z
     .string()
-    .min(1, 'Token is required.')
-    .startsWith('ghp_', 'Token must start with ghp_'),
+    .nonempty('Token is required.')
+    .refine(
+      (token) => token.startsWith('github_pat_') || token.startsWith('ghp_'),
+      'Token must start with github_pat_ or ghp_',
+    ),
 })
 
-type GitHubTokenFormData = z.infer<typeof githubTokenSchema>
-
-type AddGithubTokenDialogProps = {
-  onSuccess: () => void
-}
-
-export default function AddGithubTokenDialog({
-  onSuccess,
-}: AddGithubTokenDialogProps) {
-  const [isSaving, setIsSaving] = useState(false)
+export default function AddGithubTokenDialog() {
+  const [open, setOpen] = useState(false)
 
   const form = useForm({
     defaultValues: {
       token: '',
-    } as GitHubTokenFormData,
+    },
+    validators: {
+      onSubmit: githubTokenSchema,
+    },
     onSubmit: async ({ value }) => {
       try {
-        setIsSaving(true)
         const trimmedToken = value.token.trim()
         setStoredGithubToken(trimmedToken)
-        onSuccess()
+        form.reset()
+        setOpen(false)
+        toast.success('GitHub token saved successfully!', {
+          action: {
+            label: 'Reload page',
+            onClick: () => window.location.reload(),
+          },
+        })
       } catch (error) {
+        toast.error('Failed to store GitHub token')
         console.error('Failed to store GitHub token', error)
-      } finally {
-        setIsSaving(false)
       }
     },
   })
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="default">Add GitHub token</Button>
       </DialogTrigger>
@@ -67,7 +71,7 @@ export default function AddGithubTokenDialog({
             Raise your rate limit by using a personal access token. The token
             stays on your device and is never sent to our servers.{' '}
             <Link
-              href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token"
+              href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens"
               target="_blank"
               rel="noreferrer"
               className="underline"
@@ -81,23 +85,12 @@ export default function AddGithubTokenDialog({
           id="github-token-form"
           onSubmit={(e) => {
             e.preventDefault()
-            e.stopPropagation()
             form.handleSubmit()
           }}
         >
           <div className="grid gap-4">
             <form.Field
               name="token"
-              validators={{
-                onSubmit: z
-                  .string()
-                  .min(1, 'Token is required.')
-                  .startsWith(
-                    'github_pat_',
-                    'Token must start with github_pat_',
-                  )
-                  .length(93, 'Token must be 93 characters long'),
-              }}
               children={(field) => {
                 const isInvalid =
                   field.state.meta.isTouched &&
@@ -109,7 +102,7 @@ export default function AddGithubTokenDialog({
                     <Input
                       id="github-token"
                       type="password"
-                      placeholder="github_pat_xxxxxxxxxxxxxxxxxxxxxxxxxx"
+                      placeholder="xxxxxxxxxxxxxxx"
                       autoComplete="off"
                       value={field.state.value}
                       onBlur={field.handleBlur}
@@ -135,9 +128,9 @@ export default function AddGithubTokenDialog({
           <Button
             type="submit"
             form="github-token-form"
-            disabled={isSaving || form.state.isSubmitting}
+            disabled={form.state.isSubmitting}
           >
-            {isSaving || form.state.isSubmitting ? 'Saving…' : 'Save token'}
+            {form.state.isSubmitting ? 'Saving…' : 'Save token'}
           </Button>
         </DialogFooter>
       </DialogContent>

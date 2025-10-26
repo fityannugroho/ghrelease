@@ -48,7 +48,7 @@ export default function Error({
           <Link href="/">Go to Main Page</Link>
         </Button>
         {rateLimitError ? (
-          <AddGithubTokenDialog onSuccess={reset} />
+          <AddGithubTokenDialog />
         ) : (
           <Button variant="secondary" onClick={reset}>
             Try again
