@@ -8,7 +8,7 @@
 
 ## Tech stack
 
-- Next.js 15 (app router) + React 19
+- Next.js 16 (app router)
 - Tailwind CSS
 - Shadcn UI
 - Tanstack Query
@@ -17,8 +17,8 @@
 
 ### Prerequisite
 
-- Node.js 18 or higher
-- pnpm
+- Node.js 20.9 or higher
+- pnpm 9 or higher
 
 ### Steps
 
