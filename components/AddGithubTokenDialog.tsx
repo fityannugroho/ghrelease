@@ -117,22 +117,26 @@ export default function AddGithubTokenDialog({
                   field.state.meta.errors.length > 0
 
                 return (
-                  <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor="github-token">GitHub token</FieldLabel>
-                    <Input
-                      id="github-token"
-                      type="password"
-                      placeholder="xxxxxxxxxxxxxxx"
-                      autoComplete="off"
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                    <div className="mt-3 flex items-center gap-2">
+                  <>
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor="github-token">
+                        GitHub token
+                      </FieldLabel>
+                      <Input
+                        id="github-token"
+                        type="password"
+                        placeholder="xxxxxxxxxxxxxxx"
+                        autoComplete="off"
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={isInvalid}
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                    <Field className="mt-3" orientation="horizontal">
                       <input
                         id={rememberId}
                         type="checkbox"
@@ -142,11 +146,11 @@ export default function AddGithubTokenDialog({
                         }
                         className="h-4 w-4"
                       />
-                      <label htmlFor={rememberId} className="text-xs">
+                      <FieldLabel htmlFor={rememberId} className="text-xs">
                         Remember token for 7 days
-                      </label>
-                    </div>
-                  </Field>
+                      </FieldLabel>
+                    </Field>
+                  </>
                 )
               }}
             />
