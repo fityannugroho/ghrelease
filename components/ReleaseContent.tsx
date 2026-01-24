@@ -4,13 +4,12 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { ClockIcon, LinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
-import rehypeSanitize from 'rehype-sanitize'
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import remarkGfm from 'remark-gfm'
 import remarkGithub, {
   defaultBuildUrl,
   type Options as RemarkGithubOptions,
 } from 'remark-github'
-import { defaultSchema } from 'rehype-sanitize'
 import { toast } from 'sonner'
 import { getRelease } from '@/lib/github'
 import { isNextNotFoundError } from '@/lib/utils'

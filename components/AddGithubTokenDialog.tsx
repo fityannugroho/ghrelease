@@ -93,12 +93,13 @@ export default function AddGithubTokenDialog({
             >
               Learn how to create one.
             </Link>
-            <span className="block text-xs text-muted-foreground mt-2">
-              By default, the token is stored for this browser session. You can
-              opt in to remember it longer on this device.
-            </span>
           </DialogDescription>
         </DialogHeader>
+
+        <blockquote className="block text-xs text-muted-foreground border-l-4 pl-2 italic">
+          By default, the token is stored for this browser session only. You can
+          choose to remember it for 7 days.
+        </blockquote>
 
         <form
           id="github-token-form"
@@ -142,7 +143,7 @@ export default function AddGithubTokenDialog({
                         className="h-4 w-4"
                       />
                       <label htmlFor={rememberId} className="text-xs">
-                        Remember token on this device
+                        Remember token for 7 days
                       </label>
                     </div>
                   </Field>

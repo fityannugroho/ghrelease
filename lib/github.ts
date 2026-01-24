@@ -65,7 +65,9 @@ async function fetchGitHub<T extends object>(endpoint: string) {
       if (remaining === '0') {
         throw new Error(RATE_LIMIT_ERR_MSG)
       }
-      throw new Error('Access forbidden. Repository may be private or restricted.')
+      throw new Error(
+        'Access forbidden. Repository may be private or restricted.',
+      )
     }
     throw new Error(
       `GitHub API error: ${
