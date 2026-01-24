@@ -2,7 +2,7 @@
 
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
@@ -39,6 +39,8 @@ export default function AddGithubTokenDialog({
   onError,
 }: AddGithubTokenDialogProps) {
   const [open, setOpen] = useState(false)
+  const [rememberToken, setRememberToken] = useState(false)
+  const rememberId = useId()
 
   const form = useForm({
     defaultValues: {
@@ -50,8 +52,11 @@ export default function AddGithubTokenDialog({
     onSubmit: async ({ value }) => {
       try {
         const trimmedToken = value.token.trim()
-        setStoredGithubToken(trimmedToken)
+        setStoredGithubToken(trimmedToken, {
+          persist: rememberToken ? 'local' : 'session',
+        })
         form.reset()
+        setRememberToken(false)
         setOpen(false)
         onSuccess?.()
       } catch (error) {
@@ -61,7 +66,16 @@ export default function AddGithubTokenDialog({
   })
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen)
+        if (!nextOpen) {
+          form.reset()
+          setRememberToken(false)
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="default">Add GitHub token</Button>
       </DialogTrigger>
@@ -79,6 +93,10 @@ export default function AddGithubTokenDialog({
             >
               Learn how to create one.
             </Link>
+            <span className="block text-xs text-muted-foreground mt-2">
+              By default, the token is stored for this browser session. You can
+              opt in to remember it longer on this device.
+            </span>
           </DialogDescription>
         </DialogHeader>
 
@@ -113,6 +131,20 @@ export default function AddGithubTokenDialog({
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
                     )}
+                    <div className="mt-3 flex items-center gap-2">
+                      <input
+                        id={rememberId}
+                        type="checkbox"
+                        checked={rememberToken}
+                        onChange={(event) =>
+                          setRememberToken(event.target.checked)
+                        }
+                        className="h-4 w-4"
+                      />
+                      <label htmlFor={rememberId} className="text-xs">
+                        Remember token on this device
+                      </label>
+                    </div>
                   </Field>
                 )
               }}
