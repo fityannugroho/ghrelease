@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import Script from 'next/script'
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
 import QueryClientProvider from '@/components/QueryClientProvider'
@@ -60,6 +61,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      {process.env.UMAMI_SCRIPT_URL && process.env.UMAMI_WEBSITE_ID && (
+        <Script
+          src={process.env.UMAMI_SCRIPT_URL}
+          data-website-id={process.env.UMAMI_WEBSITE_ID}
+          defer
+        />
+      )}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
