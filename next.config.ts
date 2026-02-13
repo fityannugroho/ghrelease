@@ -22,12 +22,15 @@ const nextConfig: NextConfig = {
       connectSrc.push('ws:', 'http://localhost:*')
     }
 
-    // Build script-src directive with Umami domain if configured
     const scriptSrc = ["'self'", "'unsafe-inline'"]
+
+    // Add Umami domain to CSP directives if configured
     if (process.env.UMAMI_SCRIPT_URL) {
       try {
         const umamiUrl = new URL(process.env.UMAMI_SCRIPT_URL)
-        scriptSrc.push(`${umamiUrl.protocol}//${umamiUrl.host}`)
+        const umamiOrigin = `${umamiUrl.protocol}//${umamiUrl.host}`
+        scriptSrc.push(umamiOrigin)
+        connectSrc.push(umamiOrigin)
       } catch {
         // Invalid URL, skip adding to CSP
       }
