@@ -21,9 +21,20 @@ const nextConfig: NextConfig = {
       connectSrc.push('ws:', 'http://localhost:*')
     }
 
+    // Build script-src directive with Umami domain if configured
+    const scriptSrc = ["'self'", "'unsafe-inline'"]
+    if (process.env.UMAMI_SCRIPT_URL) {
+      try {
+        const umamiUrl = new URL(process.env.UMAMI_SCRIPT_URL)
+        scriptSrc.push(`${umamiUrl.protocol}//${umamiUrl.host}`)
+      } catch {
+        // Invalid URL, skip adding to CSP
+      }
+    }
+
     const headerValues = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      `script-src ${scriptSrc.join(' ')}`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https://avatars.githubusercontent.com",
       `connect-src ${connectSrc.join(' ')}`,
