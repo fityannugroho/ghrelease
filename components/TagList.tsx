@@ -118,7 +118,7 @@ export default function TagList({
   // Trigger the idle when rate limit error occurs
   useEffect(() => {
     if (isRateLimitError(tagsQuery.error)) {
-      triggerIdle()
+      return triggerIdle()
     }
   }, [tagsQuery.error, triggerIdle])
 

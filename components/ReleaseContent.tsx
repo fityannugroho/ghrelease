@@ -4,6 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { ClockIcon, LinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import remarkGfm from 'remark-gfm'
 import remarkGithub, {
   defaultBuildUrl,
@@ -30,6 +31,14 @@ const remarkGithubConfig: Readonly<RemarkGithubOptions> = {
     }
 
     return defaultBuildUrl(values)
+  },
+}
+
+const releaseContentSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    a: [...(defaultSchema.attributes?.a || []), 'rel', 'target'],
   },
 }
 
@@ -63,7 +72,7 @@ export default function ReleaseContent({ repo, tag }: Props) {
           onClick={() => {
             try {
               navigator.clipboard.writeText(
-                `${window.location.origin}/${repo}?tag=${release.tag_name}`,
+                `${window.location.origin}/${repo}?tag=${encodeURIComponent(release.tag_name)}`,
               )
               toast.success('Copied')
             } catch {
@@ -91,6 +100,7 @@ export default function ReleaseContent({ repo, tag }: Props) {
 
       <div className="prose prose-sm dark:prose-invert max-w-none">
         <ReactMarkdown
+          rehypePlugins={[[rehypeSanitize, releaseContentSchema]]}
           remarkPlugins={[
             remarkGfm,
             [
