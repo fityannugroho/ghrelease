@@ -98,7 +98,7 @@ export default function TagList({
 
     // Has token: retry with countdown
     /** In seconds */
-    const waitIdleTime = 10 * (tagsQuery.errorUpdateCount || 1)
+    const waitIdleTime = 10 * (tagsQuery.failureCount || 1)
     setIdleCount(waitIdleTime)
 
     const timer = setInterval(() => {
@@ -113,12 +113,12 @@ export default function TagList({
 
     // Cleanup
     return () => clearInterval(timer)
-  }, [tagsQuery.errorUpdateCount])
+  }, [tagsQuery.failureCount])
 
   // Trigger the idle when rate limit error occurs
   useEffect(() => {
     if (isRateLimitError(tagsQuery.error)) {
-      triggerIdle()
+      return triggerIdle()
     }
   }, [tagsQuery.error, triggerIdle])
 

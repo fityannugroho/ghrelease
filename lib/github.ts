@@ -62,7 +62,13 @@ async function fetchGitHub<T extends object>(endpoint: string) {
       notFound()
     }
     if (response.status === 403) {
-      throw new Error(RATE_LIMIT_ERR_MSG)
+      const remaining = response.headers.get('x-ratelimit-remaining')
+      if (remaining === '0') {
+        throw new Error(RATE_LIMIT_ERR_MSG)
+      }
+      throw new Error(
+        'Access forbidden. Repository may be private or restricted.',
+      )
     }
     throw new Error(
       `GitHub API error: ${

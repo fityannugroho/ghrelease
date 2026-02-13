@@ -2,7 +2,7 @@
 
 import { useForm } from '@tanstack/react-form'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
@@ -39,6 +39,8 @@ export default function AddGithubTokenDialog({
   onError,
 }: AddGithubTokenDialogProps) {
   const [open, setOpen] = useState(false)
+  const [rememberToken, setRememberToken] = useState(false)
+  const rememberId = useId()
 
   const form = useForm({
     defaultValues: {
@@ -50,8 +52,11 @@ export default function AddGithubTokenDialog({
     onSubmit: async ({ value }) => {
       try {
         const trimmedToken = value.token.trim()
-        setStoredGithubToken(trimmedToken)
+        setStoredGithubToken(trimmedToken, {
+          persist: rememberToken ? 'local' : 'session',
+        })
         form.reset()
+        setRememberToken(false)
         setOpen(false)
         onSuccess?.()
       } catch (error) {
@@ -61,7 +66,16 @@ export default function AddGithubTokenDialog({
   })
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen)
+        if (!nextOpen) {
+          form.reset()
+          setRememberToken(false)
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="default">Add GitHub token</Button>
       </DialogTrigger>
@@ -82,6 +96,11 @@ export default function AddGithubTokenDialog({
           </DialogDescription>
         </DialogHeader>
 
+        <blockquote className="block text-xs text-muted-foreground border-l-4 pl-2 italic">
+          By default, the token is stored for this browser session only. You can
+          choose to remember it for 7 days.
+        </blockquote>
+
         <form
           id="github-token-form"
           onSubmit={(e) => {
@@ -98,22 +117,40 @@ export default function AddGithubTokenDialog({
                   field.state.meta.errors.length > 0
 
                 return (
-                  <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor="github-token">GitHub token</FieldLabel>
-                    <Input
-                      id="github-token"
-                      type="password"
-                      placeholder="xxxxxxxxxxxxxxx"
-                      autoComplete="off"
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                  </Field>
+                  <>
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor="github-token">
+                        GitHub token
+                      </FieldLabel>
+                      <Input
+                        id="github-token"
+                        type="password"
+                        placeholder="xxxxxxxxxxxxxxx"
+                        autoComplete="off"
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={isInvalid}
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                    <Field className="mt-3" orientation="horizontal">
+                      <input
+                        id={rememberId}
+                        type="checkbox"
+                        checked={rememberToken}
+                        onChange={(event) =>
+                          setRememberToken(event.target.checked)
+                        }
+                        className="h-4 w-4"
+                      />
+                      <FieldLabel htmlFor={rememberId} className="text-xs">
+                        Remember token for 7 days
+                      </FieldLabel>
+                    </Field>
+                  </>
                 )
               }}
             />
