@@ -17,7 +17,7 @@
 
 ## Guidelines
 
-- FOLLOW any [RULES](.agent/rules/) and [WORKFLOWS](.agent/workflows/) provided in the repository
+- FOLLOW any [RULES](.agents/rules/) and [WORKFLOWS](.agents/workflows/) provided in the repository
 - ASK FOR CLARIFICATION if requirements are ambiguous before proceeding
 - Use available tools to gather context as needed
 - Write clean, well-documented code IN ENGLISH
