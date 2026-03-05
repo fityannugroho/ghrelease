@@ -17,7 +17,7 @@
 
 ### Prerequisite
 
-- Node.js 20.9 or higher
+- Node.js 22 or higher
 - pnpm 9 or higher
 
 ### Steps

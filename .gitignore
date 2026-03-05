@@ -20,6 +20,9 @@
 # production
 /build
 
+# vinext / nitro
+/.output/
+
 # misc
 .DS_Store
 *.pem
@@ -39,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# vite
+/dist/
