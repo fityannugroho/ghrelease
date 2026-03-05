@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
-    "start": "vinext start",
+    "start": "node .output/server/index.mjs",
     "lint": "biome check .",
     "lint:fix": "biome check --write ."
   },
