@@ -26,7 +26,8 @@
     "build": "vinext build",
     "start": "vinext start",
     "lint": "biome check .",
-    "lint:fix": "biome check --write ."
+    "lint:fix": "biome check --write .",
+    "deploy": "vinext deploy"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
