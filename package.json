@@ -18,16 +18,15 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=22.0.0",
+    "node": ">=20.9.0",
     "pnpm": ">=9.0.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
-    "start": "vinext start",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "deploy": "vinext deploy"
+    "lint:fix": "biome check --write ."
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
@@ -47,6 +46,7 @@
     "cmdk": "1.1.1",
     "dayjs": "^1.11.19",
     "lucide-react": "^0.575.0",
+    "next": "16.1.6",
     "next-themes": "^0.4.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -57,8 +57,6 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss-animate": "^1.0.7",
-    "vinext": "^0.0.21",
-    "vite": "^7.3.1",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -68,10 +66,7 @@
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-rsc": "^0.5.20",
-    "next": "^16.1.6",
     "postcss": "^8",
-    "react-server-dom-webpack": "^19.2.4",
     "tailwindcss": "^4.2.0",
     "typescript": "^5"
   }
