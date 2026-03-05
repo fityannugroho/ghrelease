@@ -4,7 +4,7 @@
     "migrate-to-vinext": {
       "source": "cloudflare/vinext",
       "sourceType": "github",
-      "computedHash": "19853b718a63cde339b1d5fb80ab8051738505b5940111b976888d6ab7351b32"
+      "computedHash": "b14b593094e779e0e32d1ce0175be9576366476507f7dde0c30bfeeb31e0e74e"
     }
   }
 }
