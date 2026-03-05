@@ -20,6 +20,9 @@
 # production
 /build
 
+# vinext / nitro
+/.output/
+
 # misc
 .DS_Store
 *.pem

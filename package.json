@@ -26,8 +26,7 @@
     "build": "vinext build",
     "start": "vinext start",
     "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "deploy": "vinext deploy"
+    "lint:fix": "biome check --write ."
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
@@ -70,6 +69,7 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-rsc": "^0.5.20",
     "next": "^16.1.6",
+    "nitro": "3.0.1-alpha.2",
     "postcss": "^8",
     "react-server-dom-webpack": "^19.2.4",
     "tailwindcss": "^4.2.0",
