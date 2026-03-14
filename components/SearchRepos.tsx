@@ -9,6 +9,15 @@ import { searchRepos } from '@/lib/github'
 import { debounce } from '@/lib/utils'
 import { Skeleton } from './ui/skeleton'
 
+const REPO_SKELETON_KEYS = [
+  'repo-skeleton-1',
+  'repo-skeleton-2',
+  'repo-skeleton-3',
+  'repo-skeleton-4',
+  'repo-skeleton-5',
+  'repo-skeleton-6',
+]
+
 export default function SearchRepos() {
   const [query, setQuery] = useState('')
 
@@ -50,8 +59,8 @@ export default function SearchRepos() {
 
       <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {reposQuery.isLoading &&
-          Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="w-full h-20" />
+          REPO_SKELETON_KEYS.map((key) => (
+            <Skeleton key={key} className="w-full h-20" />
           ))}
 
         {reposQuery.data?.map((repo) => (
