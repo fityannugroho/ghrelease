@@ -206,6 +206,7 @@ function FieldError({
       <ul className="ml-4 flex list-disc flex-col gap-1">
         {errors.map(
           (error, index) =>
+            // biome-ignore lint/suspicious/noArrayIndexKey: errors are not reorderable
             error?.message && <li key={index}>{error.message}</li>,
         )}
       </ul>
@@ -230,13 +231,13 @@ function FieldError({
 
 export {
   Field,
-  FieldLabel,
+  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
+  FieldLabel,
   FieldLegend,
   FieldSeparator,
   FieldSet,
-  FieldContent,
   FieldTitle,
 }

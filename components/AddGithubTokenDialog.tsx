@@ -109,9 +109,8 @@ export default function AddGithubTokenDialog({
           }}
         >
           <div className="grid gap-4">
-            <form.Field
-              name="token"
-              children={(field) => {
+            <form.Field name="token">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched &&
                   field.state.meta.errors.length > 0
@@ -153,7 +152,7 @@ export default function AddGithubTokenDialog({
                   </>
                 )
               }}
-            />
+            </form.Field>
           </div>
         </form>
 

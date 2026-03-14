@@ -139,6 +139,7 @@ export default function TagList({
         <ul className="space-y-2">
           {tagsQuery.isPending &&
             Array.from({ length: 8 }).map((_, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: skeleton is static
               <Skeleton key={i} className="w-full h-8" />
             ))}
 
