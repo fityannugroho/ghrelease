@@ -17,17 +17,6 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Skeleton } from './ui/skeleton'
 
-const TAG_SKELETON_KEYS = [
-  'tag-skeleton-1',
-  'tag-skeleton-2',
-  'tag-skeleton-3',
-  'tag-skeleton-4',
-  'tag-skeleton-5',
-  'tag-skeleton-6',
-  'tag-skeleton-7',
-  'tag-skeleton-8',
-]
-
 type Props = {
   repo: string
   tag: Tag | null
@@ -149,8 +138,9 @@ export default function TagList({
       <ScrollArea className="max-h-40 lg:max-h-80 overflow-y-auto">
         <ul className="space-y-2">
           {tagsQuery.isPending &&
-            TAG_SKELETON_KEYS.map((key) => (
-              <Skeleton key={key} className="w-full h-8" />
+            Array.from({ length: 8 }).map((_, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: skeleton is static
+              <Skeleton key={i} className="w-full h-8" />
             ))}
 
           {filteredTags.map((tag) => (

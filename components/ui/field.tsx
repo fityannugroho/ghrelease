@@ -190,29 +190,25 @@ function FieldError({
   errors?: Array<{ message?: string } | undefined>
 }) {
   const content = useMemo(() => {
-    const errorMessages = Array.from(
-      new Set(
-        errors?.flatMap((error) => (error?.message ? [error.message] : [])),
-      ),
-    )
-
     if (children) {
       return children
     }
 
-    if (errorMessages.length === 0) {
+    if (!errors) {
       return null
     }
 
-    if (errorMessages.length === 1) {
-      return errorMessages[0]
+    if (errors?.length === 1 && errors[0]?.message) {
+      return errors[0].message
     }
 
     return (
       <ul className="ml-4 flex list-disc flex-col gap-1">
-        {errorMessages.map((message) => (
-          <li key={message}>{message}</li>
-        ))}
+        {errors.map(
+          (error, index) =>
+            // biome-ignore lint/suspicious/noArrayIndexKey: errors are not reorderable
+            error?.message && <li key={index}>{error.message}</li>,
+        )}
       </ul>
     )
   }, [children, errors])
