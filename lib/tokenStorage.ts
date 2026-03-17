@@ -6,11 +6,11 @@ type StoreTokenOptions = {
 
 /**
  * Check if the user is authenticated with a GitHub token.
- * This checks for a non-HttpOnly cookie 'gh_auth'.
+ * Returns `true` if the non-HttpOnly cookie 'gh_auth' is present, `false` otherwise.
  */
-export function getStoredGithubToken(): string | null {
+export function isGithubTokenPresent(): boolean {
   if (typeof window === 'undefined') {
-    return null
+    return false
   }
 
   // We can't read the actual token (HttpOnly),
@@ -18,7 +18,7 @@ export function getStoredGithubToken(): string | null {
   const cookies = document.cookie.split('; ')
   const authCookie = cookies.find((c) => c.startsWith('gh_auth='))
 
-  return authCookie ? 'present' : null
+  return !!authCookie
 }
 
 /**
@@ -33,15 +33,21 @@ export async function setStoredGithubToken(
   }
 
   if (!token) {
-    await fetch('/api/auth/token', { method: 'DELETE' })
+    const response = await fetch('/api/auth/token', { method: 'DELETE' })
+    if (!response.ok) {
+      throw new Error('Failed to delete token')
+    }
     return
   }
 
-  await fetch('/api/auth/token', {
+  const response = await fetch('/api/auth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ token, persist }),
   })
+  if (!response.ok) {
+    throw new Error('Failed to store token')
+  }
 }
 
 /**

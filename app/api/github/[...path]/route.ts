@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { TOKEN_COOKIE_NAME } from '@/lib/auth'
 
 const GITHUB_API_URL = 'https://api.github.com'
-const TOKEN_COOKIE_NAME = 'gh_token'
 
 export async function GET(
   request: Request,
@@ -12,6 +12,27 @@ export async function GET(
 }
 
 export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ path: string[] }> },
+) {
+  return handleProxy(request, await params)
+}
+
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ path: string[] }> },
+) {
+  return handleProxy(request, await params)
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ path: string[] }> },
+) {
+  return handleProxy(request, await params)
+}
+
+export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ path: string[] }> },
 ) {

@@ -1,15 +1,10 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-
-const TOKEN_COOKIE_NAME = 'gh_token'
-const TOKEN_EXPIRY_DAYS = 7
-
-export async function GET() {
-  const cookieStore = await cookies()
-  const hasToken = cookieStore.has(TOKEN_COOKIE_NAME)
-
-  return NextResponse.json({ authenticated: hasToken })
-}
+import {
+  AUTH_COOKIE_NAME,
+  TOKEN_COOKIE_NAME,
+  TOKEN_EXPIRY_DAYS,
+} from '@/lib/auth'
 
 export async function POST(request: Request) {
   try {
@@ -17,6 +12,13 @@ export async function POST(request: Request) {
 
     if (!token) {
       return NextResponse.json({ error: 'Token is required' }, { status: 400 })
+    }
+
+    if (!token.startsWith('github_pat_') && !token.startsWith('ghp_')) {
+      return NextResponse.json(
+        { error: 'Invalid token format' },
+        { status: 400 },
+      )
     }
 
     const cookieStore = await cookies()
@@ -35,13 +37,14 @@ export async function POST(request: Request) {
       httpOnly: true,
     })
 
-    cookieStore.set('gh_auth', 'true', {
+    cookieStore.set(AUTH_COOKIE_NAME, 'true', {
       ...commonOptions,
       httpOnly: false,
     })
 
     return NextResponse.json({ success: true })
   } catch (_error) {
+    console.error(_error)
     return NextResponse.json({ error: 'Failed to set token' }, { status: 500 })
   }
 }
@@ -49,7 +52,7 @@ export async function POST(request: Request) {
 export async function DELETE() {
   const cookieStore = await cookies()
   cookieStore.delete(TOKEN_COOKIE_NAME)
-  cookieStore.delete('gh_auth')
+  cookieStore.delete(AUTH_COOKIE_NAME)
 
   return NextResponse.json({ success: true })
 }
