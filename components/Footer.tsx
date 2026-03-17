@@ -20,6 +20,7 @@ export function Footer() {
             <Link
               href="https://github.com/fityannugroho"
               target="_blank"
+              rel="noopener noreferrer"
               className="underline"
             >
               fityannugroho
