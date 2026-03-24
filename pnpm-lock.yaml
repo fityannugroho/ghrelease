@@ -2022,8 +2022,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  h3@2.0.1-rc.16:
-    resolution: {integrity: sha512-h+pjvyujdo9way8qj6FUbhaQcHlR8FEq65EhTX9ViT5pK8aLj68uFl4hBkF+hsTJAH+H1END2Yv6hTIsabGfag==}
+  h3@2.0.1-rc.17:
+    resolution: {integrity: sha512-9rPJs68qMj7HJH78z7uSIAw6rl3EElLdVSirTeAf6B5ogwiFVIr9AKMMS4u00Gp8DYIPnnjtw3ZWN7EkYcPBrQ==}
     engines: {node: '>=20.11.1'}
     hasBin: true
     peerDependencies:
@@ -2707,6 +2707,11 @@ packages:
 
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
+
+  srvx@0.11.12:
+    resolution: {integrity: sha512-AQfrGqntqVPXgP03pvBDN1KyevHC+KmYVqb8vVf4N+aomQqdhaZxjvoVp+AOm4u6x+GgNQY3MVzAUIn+TqwkOA==}
+    engines: {node: '>=20.16.0'}
+    hasBin: true
 
   srvx@0.11.9:
     resolution: {integrity: sha512-97wWJS6F0KTKAhDlHVmBzMvlBOp5FiNp3XrLoodIgYJpXxgG5tE9rX4Pg7s46n2shI4wtEsMATTS1+rI3/ubzA==}
@@ -4675,10 +4680,10 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  h3@2.0.1-rc.16(crossws@0.4.4(srvx@0.11.9)):
+  h3@2.0.1-rc.17(crossws@0.4.4(srvx@0.11.9)):
     dependencies:
       rou3: 0.8.1
-      srvx: 0.11.9
+      srvx: 0.11.12
     optionalDependencies:
       crossws: 0.4.4(srvx@0.11.9)
 
@@ -5293,7 +5298,7 @@ snapshots:
       crossws: 0.4.4(srvx@0.11.9)
       db0: 0.3.4
       env-runner: 0.1.6
-      h3: 2.0.1-rc.16(crossws@0.4.4(srvx@0.11.9))
+      h3: 2.0.1-rc.17(crossws@0.4.4(srvx@0.11.9))
       hookable: 6.0.1
       nf3: 0.3.11
       ocache: 0.1.2
@@ -5652,6 +5657,8 @@ snapshots:
   source-map@0.6.1: {}
 
   space-separated-tokens@2.0.2: {}
+
+  srvx@0.11.12: {}
 
   srvx@0.11.9: {}
 
