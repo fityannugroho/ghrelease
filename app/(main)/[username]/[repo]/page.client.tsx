@@ -25,6 +25,7 @@ function RepoHeader({ repo }: { repo: Repo }) {
           <Link
             href={`https://github.com/${repo.full_name}`}
             target="_blank"
+            rel="noopener noreferrer"
             className="hover:underline"
           >
             <code className="block line-clamp-2 text-ellipsis">
