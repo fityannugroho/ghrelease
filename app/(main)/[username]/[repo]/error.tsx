@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import AddGithubTokenDialog from '@/components/AddGithubTokenDialog'
 import { Button } from '@/components/ui/button'
 import { isRateLimitError } from '@/lib/github'
-import { getStoredGithubToken } from '@/lib/tokenStorage'
+import { isGithubTokenPresent } from '@/lib/tokenStorage'
 
 export default function Error({
   error,
@@ -25,7 +25,7 @@ export default function Error({
     console.error(error)
 
     // Check if user has token
-    setHasToken(!!getStoredGithubToken())
+    setHasToken(isGithubTokenPresent())
   }, [error])
 
   const rateLimitError = isRateLimitError(error)
