@@ -68,7 +68,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-rsc": "^0.5.34",
-    "next": "^16.3.0",
+    "next": "^16.3.4",
     "nitro": "3.0.260610-beta",
     "postcss": "^8.5.26",
     "react-server-dom-webpack": "^19.2.8",
