@@ -11,7 +11,7 @@ import {
   MAX_ITEMS_PER_PAGE,
   type Tag,
 } from '@/lib/github'
-import { getStoredGithubToken } from '@/lib/tokenStorage'
+import { isGithubTokenPresent } from '@/lib/tokenStorage'
 import AddGithubTokenDialog from './AddGithubTokenDialog'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
@@ -87,7 +87,7 @@ export default function TagList({
 
   const triggerIdle = useCallback(() => {
     // Check if user has token
-    const hasToken = !!getStoredGithubToken()
+    const hasToken = isGithubTokenPresent()
 
     if (!hasToken) {
       // No token: disable fetching permanently

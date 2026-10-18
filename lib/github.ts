@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation'
-import { getStoredGithubToken } from './tokenStorage'
 
 export type Repo = {
   id: number
@@ -24,7 +23,7 @@ export type Tag = {
 
 export const MAX_ITEMS_PER_PAGE = 30
 
-const GITHUB_API_URL = 'https://api.github.com'
+const GITHUB_API_URL = '/api/github'
 
 const RATE_LIMIT_ERR_MSG = 'GitHub API rate limit exceeded'
 
@@ -33,18 +32,7 @@ export function isRateLimitError(error: unknown) {
 }
 
 async function fetchGitHub<T extends object>(endpoint: string) {
-  const headers: Record<string, string> = {
-    Accept: 'application/vnd.github+json',
-  }
-
-  const token = getStoredGithubToken()
-  if (token) {
-    headers.Authorization = `Bearer ${token}`
-  }
-
-  const response = await fetch(`${GITHUB_API_URL}${endpoint}`, {
-    headers,
-  })
+  const response = await fetch(`${GITHUB_API_URL}${endpoint}`)
 
   const contentType = response.headers.get('content-type') || ''
 

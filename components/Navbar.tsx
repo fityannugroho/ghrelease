@@ -19,6 +19,7 @@ type MenuItem = {
   label: string
   href: string
   target?: string
+  rel?: string
   accessories?: React.ReactNode
 }
 
@@ -27,11 +28,13 @@ const menuItems: MenuItem[] = [
     href: 'https://github.com/fityannugroho/ghrelease',
     label: 'Source Code',
     target: '_blank',
+    rel: 'noopener noreferrer',
   },
   {
     href: 'https://linktr.ee/fityannugroho',
     label: 'Support Me',
     target: '_blank',
+    rel: 'noopener noreferrer',
     accessories: <HeartHandshakeIcon className="h-5 w-5" />,
   },
 ]
@@ -62,6 +65,7 @@ export function Navbar() {
                 <Link
                   href={item.href}
                   target={item.target}
+                  rel={item.rel}
                   className="flex items-center gap-1"
                 >
                   {item.label}
@@ -95,6 +99,7 @@ export function Navbar() {
                     <Link
                       href={item.href}
                       target={item.target}
+                      rel={item.rel}
                       className="flex items-center gap-2 text-lg text-foreground/70 hover:text-foreground focus:text-foreground"
                       onClick={() => setIsOpen(false)}
                     >

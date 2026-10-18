@@ -52,7 +52,7 @@ export default function AddGithubTokenDialog({
     onSubmit: async ({ value }) => {
       try {
         const trimmedToken = value.token.trim()
-        setStoredGithubToken(trimmedToken, {
+        await setStoredGithubToken(trimmedToken, {
           persist: rememberToken ? 'local' : 'session',
         })
         form.reset()
@@ -83,12 +83,12 @@ export default function AddGithubTokenDialog({
         <DialogHeader>
           <DialogTitle>Add your GitHub token</DialogTitle>
           <DialogDescription>
-            Raise your rate limit by using a personal access token. The token
-            stays on your device and is never sent to our servers.{' '}
+            Raise your rate limit by using a personal access token. The token is
+            stored securely and is only used to proxy requests to GitHub.{' '}
             <Link
               href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="underline"
             >
               Learn how to create one.
